@@ -1,0 +1,85 @@
+// prisma/schema.prisma
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL") // required for Prisma 6
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// =====================
+// Users
+// =====================
+model User {
+  id        String @id @default(cuid())
+  clerkId   String @unique
+  email     String @unique
+  firstName String?
+  lastName  String?
+  phone     String?
+  createdAt DateTime @default(now()) // member since sep 2025
+  updatedAt DateTime @updatedAt
+
+  appointments Appointment[]
+
+  @@map("users")
+}
+
+// =====================
+// Doctors
+// =====================
+model Doctor {
+  id          String   @id @default(cuid())
+  name        String
+  email       String   @unique
+  phone       String
+  speciality  String
+  bio         String?
+  imageUrl    String
+  gender      Gender
+  isActive    Boolean @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  appointments Appointment[]
+
+  @@map("doctors")
+}
+
+// =====================
+// Appointments
+// =====================
+model Appointment {
+  id        String            @id @default(cuid())
+  date      DateTime
+  time      String             // store time as string i.e., "14:30"
+  duration  Int               @default(30) // in minutes
+  status    AppointmentStatus @default(CONFIRMED)
+  notes     String?
+  reason    String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId   String
+  doctorId String
+
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  doctor   Doctor @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+
+  @@map("appointments")
+}
+
+// =====================
+// Enums
+// =====================
+enum Gender {
+  MALE
+  FEMALE
+}
+
+enum AppointmentStatus {
+  CONFIRMED
+  COMPLETED
+}

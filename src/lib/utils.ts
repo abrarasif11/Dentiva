@@ -12,3 +12,29 @@ export function generateAvatar(name: string, gender: "MALE" | "FEMALE") {
   // default to boy
   return `${base}/boy?username=${username}`;
 }
+
+// 🇧🇩 phone formatting function for Bangladesh numbers
+export const formatPhoneNumber = (value: string) => {
+  if (!value) return value;
+
+  // keep digits only
+  let phoneNumber = value.replace(/[^\d]/g, "");
+
+  // convert 8801XXXXXXXXX → 01XXXXXXXXX (normalize)
+  if (phoneNumber.startsWith("880")) {
+    phoneNumber = "0" + phoneNumber.slice(3);
+  }
+
+  const len = phoneNumber.length;
+
+  // typing stage formatting
+  if (len <= 5) return phoneNumber;
+
+  if (len <= 11) {
+    // 01XXX-XXXXXX
+    return `${phoneNumber.slice(0, 5)}-${phoneNumber.slice(5, 11)}`;
+  }
+
+  // fallback if extra digits
+  return `${phoneNumber.slice(0, 5)}-${phoneNumber.slice(5, 11)}`;
+};

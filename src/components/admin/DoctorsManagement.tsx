@@ -9,7 +9,6 @@ import {
   CardTitle,
 } from "../ui/card";
 import {
-  Badge,
   EditIcon,
   MailIcon,
   PhoneIcon,
@@ -17,8 +16,10 @@ import {
   StethoscopeIcon,
 } from "lucide-react";
 import { Button } from "../ui/button";
+import { Badge } from "../ui/badge";
 import Image from "next/image";
 import AddDoctorDialog from "./AddDoctorDialog";
+import EditDoctorDialog from "./EditDoctorDialog";
 
 function DoctorsManagement() {
   const { data: doctors = [] } = useGetDoctors();
@@ -132,6 +133,13 @@ function DoctorsManagement() {
       <AddDoctorDialog
         isOpen={isAddDialogOpen}
         onClose={() => setIsAddDialogOpen(false)}
+      />
+
+      <EditDoctorDialog
+        key={selectedDoctor?.id}
+        isOpen={isEditDialogOpen}
+        onClose={handleCloseEditDialog}
+        doctor={selectedDoctor}
       />
     </>
   );

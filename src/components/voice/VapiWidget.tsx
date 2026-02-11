@@ -5,6 +5,7 @@ import { useUser } from "@clerk/nextjs";
 import { useEffect, useRef, useState } from "react";
 import { Card } from "../ui/card";
 import Image from "next/image";
+import { Button } from "../ui/button";
 
 function VapiWidget() {
   const [callActive, setCallActive] = useState(false);
@@ -217,6 +218,35 @@ function VapiWidget() {
             </div>
           </div>
         </Card>
+      </div>
+
+      {/* CALL CONTROLS */}
+      <div className="w-full flex justify-center gap-4">
+        <Button
+          className={`w-44 text-xl rounded-3xl ${
+            callActive
+              ? "bg-destructive hover:bg-destructive/90"
+              : callEnded
+              ? "bg-red-500 hover:bg-red-700"
+              : "bg-primary hover:bg-primary/90"
+          } text-white relative`}
+          onClick={toggleCall}
+          disabled={connecting || callEnded}
+        >
+          {connecting && (
+            <span className="absolute inset-0 rounded-full animate-ping bg-primary/50 opacity-75"></span>
+          )}
+
+          <span>
+            {callActive
+              ? "End Call"
+              : connecting
+              ? "Connecting..."
+              : callEnded
+              ? "Call Ended"
+              : "Start Call"}
+          </span>
+        </Button>
       </div>
     </div>
   );

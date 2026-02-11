@@ -220,6 +220,39 @@ function VapiWidget() {
         </Card>
       </div>
 
+      {/* MESSAGE CONTAINER */}
+      {messages.length > 0 && (
+        <div
+          ref={messageContainerRef}
+          className="w-full bg-card/90 backdrop-blur-sm border border-border rounded-xl p-4 mb-8 h-64 overflow-y-auto transition-all duration-300 scroll-smooth"
+        >
+          <div className="space-y-3">
+            {messages.map((msg, index) => (
+              <div
+                key={index}
+                className="message-item animate-in fade-in duration-300"
+              >
+                <div className="font-semibold text-xs text-muted-foreground mb-1">
+                  {msg.role === "assistant" ? "Dentiva AI" : "You"}:
+                </div>
+                <p className="text-foreground">{msg.content}</p>
+              </div>
+            ))}
+
+            {callEnded && (
+              <div className="message-item animate-in fade-in duration-300">
+                <div className="font-semibold text-xs text-primary mb-1">
+                  System:
+                </div>
+                <p className="text-foreground">
+                  Call ended. Thank you for using Dentiva AI!
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* CALL CONTROLS */}
       <div className="w-full flex justify-center gap-4">
         <Button

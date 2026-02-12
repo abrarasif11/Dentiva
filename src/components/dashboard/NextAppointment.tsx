@@ -1,6 +1,7 @@
-import React from "react";
+import { getUserAppointments } from "@/lib/actions/appointments";
 
-function NextAppointment() {
+async function NextAppointment() {
+  const appointment = await getUserAppointments();
   return (
     <div>
       <p>NextAppointment</p>

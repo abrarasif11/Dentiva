@@ -4,6 +4,7 @@ import {
   bookAppointment,
   getAppointments,
   getBookedTimeSlots,
+  getUserAppointments,
 } from "@/lib/actions/appointments";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -34,4 +35,14 @@ export function useBookAppointment() {
     },
     onError: (error) => console.error("Failed to book appointment:", error),
   });
+}
+
+// Get user-specific appointments
+export function useUserAppointments() {
+  const result = useQuery({
+    queryKey: ["getUserAppointments"],
+    queryFn: getUserAppointments,
+  });
+
+  return result;
 }

@@ -2,6 +2,7 @@
 
 import DoctorSelectionStep from "@/components/appointments/DoctorSelectionStep";
 import ProgressSteps from "@/components/appointments/ProgressSteps";
+import TimeSelectionStep from "@/components/appointments/TimeSelectionStep";
 import Navbar from "@/components/Navbar";
 import { useState } from "react";
 
@@ -43,6 +44,19 @@ function AppointmentPages() {
             selectedDentistId={selectedDentistId}
             onContinue={() => setCurrentStep(2)}
             onSelectDentist={handleSelectDentist}
+          />
+        )}
+        {currentStep === 2 && selectedDentistId && (
+          <TimeSelectionStep
+            selectedDentistId={selectedDentistId}
+            selectedDate={selectedDate}
+            selectedTime={selectedTime}
+            selectedType={selectedType}
+            onBack={() => setCurrentStep(1)}
+            onContinue={() => setCurrentStep(3)}
+            onDateChange={setSelectedDate}
+            onTimeChange={setSelectedTime}
+            onTypeChange={setSelectedType}
           />
         )}
       </div>

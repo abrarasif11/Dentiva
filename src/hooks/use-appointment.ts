@@ -1,6 +1,9 @@
 "use client";
 
-import { getAppointments } from "@/lib/actions/appointments";
+import {
+  getAppointments,
+  getBookedTimeSlots,
+} from "@/lib/actions/appointments";
 import { useQuery } from "@tanstack/react-query";
 
 export function useGetAppointments() {
@@ -10,4 +13,12 @@ export function useGetAppointments() {
   });
 
   return result;
+}
+
+export function useBookedTimeSlots(doctorId: string, date: string) {
+  return useQuery({
+    queryKey: ["getBookedTimeSlots"],
+    queryFn: () => getBookedTimeSlots(doctorId!, date),
+    enabled: !!doctorId && !!date,
+  });
 }

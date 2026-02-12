@@ -1,5 +1,6 @@
 "use client";
 
+import DoctorSelectionStep from "@/components/appointments/DoctorSelectionStep";
 import ProgressSteps from "@/components/appointments/ProgressSteps";
 import Navbar from "@/components/Navbar";
 import { useState } from "react";
@@ -16,7 +17,12 @@ function AppointmentPages() {
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [bookedAppointment, setBookedAppointment] = useState<any>(null);
 
-  const handleSelectDentist = (dentistId: string) => {};
+  const handleSelectDentist = (dentistId: string) => {
+    setSelectedDentistId(dentistId);
+    setSelectedDate("");
+    setSelectedTime("");
+    setSelectedType("");
+  };
 
   const handleBookAppointment = async () => {};
 
@@ -32,6 +38,13 @@ function AppointmentPages() {
           </p>
         </div>
         <ProgressSteps currentStep={currentStep} />
+        {currentStep === 1 && (
+          <DoctorSelectionStep
+            selectedDentistId={selectedDentistId}
+            onContinue={() => setCurrentStep(2)}
+            onSelectDentist={handleSelectDentist}
+          />
+        )}
       </div>
     </>
   );

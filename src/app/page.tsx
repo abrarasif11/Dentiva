@@ -5,12 +5,14 @@ import Hero from "@/components/ui/landing/Hero";
 import HowItWorks from "@/components/ui/landing/HowItWorks";
 import PricingSection from "@/components/ui/landing/PricingSection";
 import WhatToAsk from "@/components/ui/landing/WhatToAsk";
+import { syncUser } from "@/lib/actions/users";
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
 export default async function Home() {
   const user = await currentUser();
   if (user) redirect("/dashboard");
+  await syncUser();
   return (
     <div className="min-h-screen bg-background">
       <Header />

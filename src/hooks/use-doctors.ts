@@ -23,8 +23,8 @@ export function useCreateDoctor() {
   const result = useMutation({
     mutationFn: createDoctor,
     onSuccess: () => {
-      // invalidate related queries to refresh the data
       queryClient.invalidateQueries({ queryKey: ["getDoctors"] });
+      queryClient.invalidateQueries({ queryKey: ["getAvailableDoctors"] });
     },
     onError: (error) => console.log("Error while  creating a doctor"),
   });

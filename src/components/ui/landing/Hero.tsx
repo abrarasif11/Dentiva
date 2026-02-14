@@ -75,35 +75,35 @@ function Hero() {
                   USER AVATARS
                   <div className="flex -space-x-3">
                     <Image
-                      src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=face"
+                      src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=688&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                       alt="Jessica Davis"
                       width={48}
                       height={48}
                       className="w-12 h-12 rounded-full object-cover ring-4 ring-background"
                     />
                     <Image
-                      src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=100&h=100&fit=crop&crop=face"
+                      src="https://plus.unsplash.com/premium_photo-1689575249400-fca1a67732b5?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                       alt="Sam Miller"
                       width={48}
                       height={48}
                       className="w-12 h-12 rounded-full object-cover ring-4 ring-background"
                     />
                     <Image
-                      src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=100&h=100&fit=crop&crop=face"
+                      src="https://plus.unsplash.com/premium_photo-1677621983919-1f021d3eb380?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                       alt="Anna Lopez"
                       width={48}
                       height={48}
                       className="w-12 h-12 rounded-full object-cover ring-4 ring-background"
                     />
                     <Image
-                      src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=100&h=100&fit=crop&crop=face"
+                      src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                       alt="Mike Rodriguez"
                       width={48}
                       height={48}
                       className="w-12 h-12 rounded-full object-cover ring-4 ring-background"
                     />
                     <Image
-                      src="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=100&h=100&fit=crop&crop=face"
+                      src="https://plus.unsplash.com/premium_photo-1763734693985-fdb1db8d6b1e?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                       alt="Katie Lee"
                       width={48}
                       height={48}

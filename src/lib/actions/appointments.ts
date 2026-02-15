@@ -4,6 +4,7 @@ import { auth, currentUser } from "@clerk/nextjs/server";
 import { prisma } from "../prisma";
 import { AppointmentStatus } from "@prisma/client";
 
+// Transform appointments to include doctor & patient info
 function transformAppointment(appointment: any) {
   return {
     ...appointment,
@@ -16,6 +17,26 @@ function transformAppointment(appointment: any) {
   };
 }
 
+// Utility: auto-create user if missing
+async function getOrCreateUser(userId: string) {
+  let user = await prisma.user.findUnique({ where: { clerkId: userId } });
+
+  if (!user) {
+    const clerkUser = await currentUser();
+    user = await prisma.user.create({
+      data: {
+        clerkId: userId,
+        email: clerkUser?.emailAddresses?.[0]?.emailAddress ?? "",
+        firstName: clerkUser?.firstName ?? "",
+        lastName: clerkUser?.lastName ?? "",
+      },
+    });
+  }
+
+  return user;
+}
+
+// Get all appointments
 export async function getAppointments() {
   try {
     const appointments = await prisma.appointment.findMany({
@@ -33,25 +54,13 @@ export async function getAppointments() {
   }
 }
 
+// Get appointments for the currently logged-in user
 export async function getUserAppointments() {
   try {
     const { userId } = await auth();
     if (!userId) throw new Error("You must be logged in to view appointments");
 
-    let user = await prisma.user.findUnique({ where: { clerkId: userId } });
-
-    // Auto-create user if missing
-    if (!user) {
-      const clerkUser = await currentUser();
-      user = await prisma.user.create({
-        data: {
-          clerkId: userId,
-          email: clerkUser?.emailAddresses?.[0]?.emailAddress ?? "",
-          firstName: clerkUser?.firstName ?? "",
-          lastName: clerkUser?.lastName ?? "",
-        },
-      });
-    }
+    const user = await getOrCreateUser(userId);
 
     const appointments = await prisma.appointment.findMany({
       where: { userId: user.id },
@@ -69,24 +78,13 @@ export async function getUserAppointments() {
   }
 }
 
+// Get user appointment stats
 export async function getUserAppointmentStats() {
   try {
     const { userId } = await auth();
     if (!userId) return { totalAppointments: 0, completedAppointments: 0 };
 
-    let user = await prisma.user.findUnique({ where: { clerkId: userId } });
-
-    if (!user) {
-      const clerkUser = await currentUser();
-      user = await prisma.user.create({
-        data: {
-          clerkId: userId,
-          email: clerkUser?.emailAddresses?.[0]?.emailAddress ?? "",
-          firstName: clerkUser?.firstName ?? "",
-          lastName: clerkUser?.lastName ?? "",
-        },
-      });
-    }
+    const user = await getOrCreateUser(userId);
 
     const [totalCount, completedCount] = await Promise.all([
       prisma.appointment.count({ where: { userId: user.id } }),
@@ -105,6 +103,7 @@ export async function getUserAppointmentStats() {
   }
 }
 
+// Get booked time slots for a doctor on a specific date
 export async function getBookedTimeSlots(doctorId: string, date: string) {
   try {
     const appointments = await prisma.appointment.findMany({
@@ -123,6 +122,7 @@ export async function getBookedTimeSlots(doctorId: string, date: string) {
   }
 }
 
+// Book a new appointment
 interface BookAppointmentInput {
   doctorId: string;
   date: string;
@@ -140,8 +140,7 @@ export async function bookAppointment(input: BookAppointmentInput) {
       throw new Error("Doctor, date, and time are required");
     }
 
-    const user = await prisma.user.findUnique({ where: { clerkId: userId } });
-    if (!user) throw new Error("User not found");
+    const user = await getOrCreateUser(userId);
 
     const appointment = await prisma.appointment.create({
       data: {
@@ -165,6 +164,7 @@ export async function bookAppointment(input: BookAppointmentInput) {
   }
 }
 
+// Update appointment status
 export async function updateAppointmentStatus(input: {
   id: string;
   status: AppointmentStatus;
